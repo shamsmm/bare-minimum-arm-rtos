@@ -1,4 +1,6 @@
+#include <stdint.h>
 #include "stm32f103_it.h"
+#include "system_stm32f1xx.h"
 
 void Default_Handler(void) {
     while(1);
@@ -152,6 +154,8 @@ void (* const g_pfnVectors[])(void) =
 
 void Reset_Handler(void)
 {
+//    SystemInit();
+
     unsigned long *pulSrc, *pulDest;
 
     //

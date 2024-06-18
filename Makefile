@@ -5,7 +5,7 @@ OBJCOPY=$(TOOLCHAIN)-objcopy
 
 OBJS = crt0_stm32f103.o syscalls.o stm32f103_it.o system_stm32f1xx.o
 OBJS += stm32f1xx_hal.o stm32f1xx_hal_cortex.o stm32f1xx_hal_rcc.o stm32f1xx_hal_gpio.o stm32f1xx_hal_dma.o stm32f1xx_hal_uart.o stm32f1xx_hal_spi.o
-OBJS += port.o tasks.o queue.o list.o heap_1.o
+OBJS += port.o tasks.o queue.o list.o heap_3.o
 OBJS += fonts.o GFX_FUNCTIONS.o ST7735.o
 OBJS += main.o
 
@@ -31,7 +31,7 @@ vpath %.c $(SRC)
 
 vpath %.c lib/st7735
 
-CFLAGS=-ggdb -mthumb -mcpu=cortex-m3 -O2 -DSTM32F103xB -DUSE_FULL_ASSERT -DINCLUDE_xTaskGetCurrentTaskHandle
+CFLAGS=-ggdb -mthumb -mcpu=cortex-m3 -O0 -DSTM32F103xB -DUSE_FULL_ASSERT -DINCLUDE_xTaskGetCurrentTaskHandle
 
 # Paths to libraries .h header files
 CFLAGS+= -I$(STM32F1XX_HAL_DRIVER)/Inc/ -I$(CMSIS)/Device/ST/STM32F1xx/Include/ -I$(CMSIS)/Include

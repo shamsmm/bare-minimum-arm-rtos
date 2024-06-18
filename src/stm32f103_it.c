@@ -6,3 +6,8 @@
 //{
 //    HAL_IncTick();
 //}
+
+void HardFaultException(void) {
+    // TODO:
+    while (1);
+}

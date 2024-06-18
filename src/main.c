@@ -18,7 +18,6 @@ int main(void)
 
     __HAL_RCC_GPIOC_CLK_ENABLE();
 
-
     SystemClock_Config();
 
     __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -71,11 +70,8 @@ int main(void)
     hspi1.Init.CRCPolynomial = 10;
     HAL_SPI_Init(&hspi1);
 
-    ST7735_Init(0);
-    fillScreen(BLACK);
-
-    xTaskCreate( prvDisplayThread, "LCD", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL );
-    xTaskCreate( prvBlinkingThread, "Led", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL );
+    xTaskCreate( prvDisplayThread, "lcd", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL );
+    xTaskCreate( prvBlinkingThread, "led", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 1, NULL );
 
     /* Start scheduler */
     vTaskStartScheduler();
@@ -88,9 +84,30 @@ static void prvDisplayThread(void  * pvParameters)
 {
     (void) pvParameters;
 
+    ST7735_Init(0);
+    fillScreen(BLACK);
+
     for (;;)
     {
+        ST7735_SetRotation(0);
+        ST7735_WriteString(0, 0, "HELLO", Font_11x18, RED,BLACK);
+        vTaskDelay(1000);
+        fillScreen(BLACK);
 
+        ST7735_SetRotation(1);
+        ST7735_WriteString(0, 0, "WORLD", Font_11x18, GREEN,BLACK);
+        vTaskDelay(1000);
+        fillScreen(BLACK);
+
+        ST7735_SetRotation(2);
+        ST7735_WriteString(0, 0, "FROM", Font_11x18, BLUE,BLACK);
+        vTaskDelay(1000);
+        fillScreen(BLACK);
+
+        ST7735_SetRotation(3);
+        ST7735_WriteString(0, 0, "ControllersTech", Font_16x26, YELLOW,BLACK);
+        vTaskDelay(1000);
+        fillScreen(BLACK);
     }
 }
 
@@ -100,7 +117,8 @@ static void prvBlinkingThread(void * pvParameters)
 
     for (;;)
     {
-
+        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+        vTaskDelay(500);
     }
 }
 
@@ -140,7 +158,7 @@ void SystemClock_Config(void)
 
 void vApplicationTickHook( void )
 {
-
+    HAL_IncTick();
 }
 
 #ifdef  USE_FULL_ASSERT

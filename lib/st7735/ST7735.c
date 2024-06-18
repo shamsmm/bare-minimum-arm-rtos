@@ -1,5 +1,8 @@
 #include <ST7735.h>
 #include <stdint.h>
+#include "FreeRTOS.h"
+#include "task.h"
+
 
 int16_t _width;       ///< Display width as modified by current rotation
 int16_t _height;      ///< Display height as modified by current rotation
@@ -100,7 +103,7 @@ void ST7735_Unselect()
 void ST7735_Reset()
 {
     HAL_GPIO_WritePin(RST_PORT, RST_PIN, GPIO_PIN_RESET);
-    HAL_Delay(5);
+    vTaskDelay(5);
     HAL_GPIO_WritePin(RST_PORT, RST_PIN, GPIO_PIN_SET);
 }
 
@@ -138,7 +141,7 @@ void DisplayInit(const uint8_t *addr)
         if(ms) {
             ms = *addr++;
             if(ms == 255) ms = 500;
-            HAL_Delay(ms);
+            vTaskDelay(ms);
         }
     }
 }
